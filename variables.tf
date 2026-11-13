@@ -28,5 +28,13 @@ EOT
       value     = string
     })))
   }))
+  validation {
+    condition = alltrue([
+      for k, v in var.service_custom_fields : (
+        v.field_option == null || alltrue([for item in v.field_option : (contains(["string"], item.data_type))])
+      )
+    ])
+    error_message = "must be one of: \"string\""
+  }
 }
 
